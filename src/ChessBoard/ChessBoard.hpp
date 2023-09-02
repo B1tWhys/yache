@@ -13,8 +13,10 @@ private:
     SquareState board[8][8] = {EMPTY};
 
     unsigned char squareToAsciiPiece(Coordinate coordinate);
+
     void addWhitePawnMovesFrom(Coordinate coordinate, std::vector<Move> *moves);
     void addBlackPawnMovesFrom(Coordinate coordinate, std::vector<Move> *moves);
+    void addKnightMovesFrom(Coordinate coordinate, std::vector<Move> *moves);
 public:
     ChessBoard(const std::string &fen);
 

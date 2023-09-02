@@ -87,7 +87,6 @@ ChessBoard::ChessBoard(const string &fen) {
     if (castlingFen.find('Q') != string::npos) castlingPrivileges |= WHITE_QUEEN_SIDE;
     if (castlingFen.find('k') != string::npos) castlingPrivileges |= BLACK_KING_SIDE;
     if (castlingFen.find('q') != string::npos) castlingPrivileges |= BLACK_QUEEN_SIDE;
-
 }
 
 ChessBoard::~ChessBoard() = default;
@@ -177,6 +176,7 @@ std::vector<Move> ChessBoard::pseudoLegalMoves() {
                 case WHITE_ROOK:
                     break;
                 case WHITE_KNIGHT:
+                    if (isWhiteTurn) this->addKnightMovesFrom(coordinate, &moves);
                     break;
                 case WHITE_BISHOP:
                     break;
@@ -192,6 +192,7 @@ std::vector<Move> ChessBoard::pseudoLegalMoves() {
                 case BLACK_ROOK:
                     break;
                 case BLACK_KNIGHT:
+                    if (!isWhiteTurn) this->addKnightMovesFrom(coordinate, &moves);
                     break;
                 case BLACK_BISHOP:
                     break;
@@ -224,6 +225,26 @@ void ChessBoard::addBlackPawnMovesFrom(Coordinate coordinate, std::vector<Move> 
             moves->emplace_back(coordinate, Coordinate(coordinate.getRank() - 2, coordinate.getFile()), EMPTY);
         }
     }
+}
+
+void ChessBoard::addKnightMovesFrom(Coordinate coordinate, std::vector<Move> *moves) {
+    // these are starting from up 2 right 1, moving around clockwise
+    Coordinate target = Coordinate(coordinate.getRank() + 2, coordinate.getFile() + 1);
+    if (target.isValidSquare()) moves->emplace_back(coordinate, target, EMPTY);
+    target = Coordinate(coordinate.getRank() + 1, coordinate.getFile() + 2);
+    if (target.isValidSquare()) moves->emplace_back(coordinate, target, EMPTY);
+    target = Coordinate(coordinate.getRank() - 1, coordinate.getFile() + 2);
+    if (target.isValidSquare()) moves->emplace_back(coordinate, target, EMPTY);
+    target = Coordinate(coordinate.getRank() - 2, coordinate.getFile() + 1);
+    if (target.isValidSquare()) moves->emplace_back(coordinate, target, EMPTY);
+    target = Coordinate(coordinate.getRank() - 2, coordinate.getFile() - 1);
+    if (target.isValidSquare()) moves->emplace_back(coordinate, target, EMPTY);
+    target = Coordinate(coordinate.getRank() - 1, coordinate.getFile() - 2);
+    if (target.isValidSquare()) moves->emplace_back(coordinate, target, EMPTY);
+    target = Coordinate(coordinate.getRank() + 1, coordinate.getFile() - 2);
+    if (target.isValidSquare()) moves->emplace_back(coordinate, target, EMPTY);
+    target = Coordinate(coordinate.getRank() + 2, coordinate.getFile() - 1);
+    if (target.isValidSquare()) moves->emplace_back(coordinate, target, EMPTY);
 }
 
 void ChessBoard::makeMove(const Move *move) {

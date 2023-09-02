@@ -11,6 +11,7 @@ public:
     explicit Coordinate(unsigned char cords);
     unsigned char getRank() const;
     unsigned char getFile() const;
+    bool isValidSquare() const;
     unsigned char cords;
     bool operator==(const Coordinate other) const;
 

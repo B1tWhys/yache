@@ -23,6 +23,10 @@ unsigned char Coordinate::getFile() const {
     return cords & 0x0f;
 }
 
+bool Coordinate::isValidSquare() const {
+    return getRank() < 8 && getFile() < 8;
+}
+
 bool Coordinate::operator==(const Coordinate other) const {
     return other.cords == cords;
 }
