@@ -11,7 +11,7 @@ TEST_CASE("Empty board returns false for any square being occupied")
 
     INFO("Testing rank: " << rank << " file: " << file);
 
-    REQUIRE_FALSE(cb.squareIsOccupied({.rank = rank, .file = file}));
+    REQUIRE_FALSE(cb.squareIsOccupied(Coordinate(rank, file)));
 }
 
 TEST_CASE("Initial board state has the right spots occupied") {
@@ -23,7 +23,7 @@ TEST_CASE("Initial board state has the right spots occupied") {
     bool shouldContainPiece = rank < 2 || rank > 5;
     INFO(rank << "," << file << (shouldContainPiece ? " should" : " should not") << " contain a piece");
 
-    REQUIRE(cb.squareIsOccupied({.rank = rank, .file = file}) == shouldContainPiece);
+    REQUIRE(cb.squareIsOccupied(Coordinate(rank, file)) == shouldContainPiece);
 }
 
 TEST_CASE("Turn color is parsed correctly from the fen") {
@@ -37,84 +37,84 @@ TEST_CASE("Turn color is parsed correctly from the fen") {
 TEST_CASE("Initial board state is parsed correctly") {
     ChessBoard cb = ChessBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -");
 
-    REQUIRE(cb.squareState({.rank = 0, .file = 0}) == WHITE_ROOK);
-    REQUIRE(cb.squareState({.rank = 0, .file = 1}) == WHITE_KNIGHT);
-    REQUIRE(cb.squareState({.rank = 0, .file = 2}) == WHITE_BISHOP);
-    REQUIRE(cb.squareState({.rank = 0, .file = 3}) == WHITE_QUEEN);
-    REQUIRE(cb.squareState({.rank = 0, .file = 4}) == WHITE_KING);
-    REQUIRE(cb.squareState({.rank = 0, .file = 5}) == WHITE_BISHOP);
-    REQUIRE(cb.squareState({.rank = 0, .file = 6}) == WHITE_KNIGHT);
-    REQUIRE(cb.squareState({.rank = 0, .file = 7}) == WHITE_ROOK);
+    REQUIRE(cb.squareState(Coordinate(0, 0)) == WHITE_ROOK);
+    REQUIRE(cb.squareState(Coordinate(0, 1)) == WHITE_KNIGHT);
+    REQUIRE(cb.squareState(Coordinate(0, 2)) == WHITE_BISHOP);
+    REQUIRE(cb.squareState(Coordinate(0, 3)) == WHITE_QUEEN);
+    REQUIRE(cb.squareState(Coordinate(0, 4)) == WHITE_KING);
+    REQUIRE(cb.squareState(Coordinate(0, 5)) == WHITE_BISHOP);
+    REQUIRE(cb.squareState(Coordinate(0, 6)) == WHITE_KNIGHT);
+    REQUIRE(cb.squareState(Coordinate(0, 7)) == WHITE_ROOK);
 
-    REQUIRE(cb.squareState({.rank = 1, .file = 0}) == WHITE_PAWN);
-    REQUIRE(cb.squareState({.rank = 1, .file = 1}) == WHITE_PAWN);
-    REQUIRE(cb.squareState({.rank = 1, .file = 2}) == WHITE_PAWN);
-    REQUIRE(cb.squareState({.rank = 1, .file = 3}) == WHITE_PAWN);
-    REQUIRE(cb.squareState({.rank = 1, .file = 4}) == WHITE_PAWN);
-    REQUIRE(cb.squareState({.rank = 1, .file = 5}) == WHITE_PAWN);
-    REQUIRE(cb.squareState({.rank = 1, .file = 6}) == WHITE_PAWN);
-    REQUIRE(cb.squareState({.rank = 1, .file = 7}) == WHITE_PAWN);
+    REQUIRE(cb.squareState(Coordinate(1, 0)) == WHITE_PAWN);
+    REQUIRE(cb.squareState(Coordinate(1, 1)) == WHITE_PAWN);
+    REQUIRE(cb.squareState(Coordinate(1, 2)) == WHITE_PAWN);
+    REQUIRE(cb.squareState(Coordinate(1, 3)) == WHITE_PAWN);
+    REQUIRE(cb.squareState(Coordinate(1, 4)) == WHITE_PAWN);
+    REQUIRE(cb.squareState(Coordinate(1, 5)) == WHITE_PAWN);
+    REQUIRE(cb.squareState(Coordinate(1, 6)) == WHITE_PAWN);
+    REQUIRE(cb.squareState(Coordinate(1, 7)) == WHITE_PAWN);
 
-    REQUIRE(cb.squareState({.rank = 2, .file = 0}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 2, .file = 1}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 2, .file = 2}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 2, .file = 3}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 2, .file = 4}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 2, .file = 5}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 2, .file = 6}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 2, .file = 7}) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(2, 0)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(2, 1)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(2, 2)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(2, 3)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(2, 4)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(2, 5)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(2, 6)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(2, 7)) == EMPTY);
 
-    REQUIRE(cb.squareState({.rank = 3, .file = 0}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 3, .file = 1}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 3, .file = 2}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 3, .file = 3}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 3, .file = 4}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 3, .file = 5}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 3, .file = 6}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 3, .file = 7}) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(3, 0)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(3, 1)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(3, 2)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(3, 3)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(3, 4)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(3, 5)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(3, 6)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(3, 7)) == EMPTY);
 
-    REQUIRE(cb.squareState({.rank = 4, .file = 0}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 4, .file = 1}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 4, .file = 2}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 4, .file = 3}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 4, .file = 4}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 4, .file = 5}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 4, .file = 6}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 4, .file = 7}) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(4, 0)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(4, 1)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(4, 2)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(4, 3)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(4, 4)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(4, 5)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(4, 6)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(4, 7)) == EMPTY);
 
-    REQUIRE(cb.squareState({.rank = 5, .file = 0}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 5, .file = 1}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 5, .file = 2}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 5, .file = 3}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 5, .file = 4}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 5, .file = 5}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 5, .file = 6}) == EMPTY);
-    REQUIRE(cb.squareState({.rank = 5, .file = 7}) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(5, 0)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(5, 1)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(5, 2)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(5, 3)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(5, 4)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(5, 5)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(5, 6)) == EMPTY);
+    REQUIRE(cb.squareState(Coordinate(5, 7)) == EMPTY);
 
-    REQUIRE(cb.squareState({.rank = 6, .file = 0}) == BLACK_PAWN);
-    REQUIRE(cb.squareState({.rank = 6, .file = 1}) == BLACK_PAWN);
-    REQUIRE(cb.squareState({.rank = 6, .file = 2}) == BLACK_PAWN);
-    REQUIRE(cb.squareState({.rank = 6, .file = 3}) == BLACK_PAWN);
-    REQUIRE(cb.squareState({.rank = 6, .file = 4}) == BLACK_PAWN);
-    REQUIRE(cb.squareState({.rank = 6, .file = 5}) == BLACK_PAWN);
-    REQUIRE(cb.squareState({.rank = 6, .file = 6}) == BLACK_PAWN);
-    REQUIRE(cb.squareState({.rank = 6, .file = 7}) == BLACK_PAWN);
+    REQUIRE(cb.squareState(Coordinate(6, 0)) == BLACK_PAWN);
+    REQUIRE(cb.squareState(Coordinate(6, 1)) == BLACK_PAWN);
+    REQUIRE(cb.squareState(Coordinate(6, 2)) == BLACK_PAWN);
+    REQUIRE(cb.squareState(Coordinate(6, 3)) == BLACK_PAWN);
+    REQUIRE(cb.squareState(Coordinate(6, 4)) == BLACK_PAWN);
+    REQUIRE(cb.squareState(Coordinate(6, 5)) == BLACK_PAWN);
+    REQUIRE(cb.squareState(Coordinate(6, 6)) == BLACK_PAWN);
+    REQUIRE(cb.squareState(Coordinate(6, 7)) == BLACK_PAWN);
 
-    REQUIRE(cb.squareState({.rank = 7, .file = 0}) == BLACK_ROOK);
-    REQUIRE(cb.squareState({.rank = 7, .file = 1}) == BLACK_KNIGHT);
-    REQUIRE(cb.squareState({.rank = 7, .file = 2}) == BLACK_BISHOP);
-    REQUIRE(cb.squareState({.rank = 7, .file = 3}) == BLACK_QUEEN);
-    REQUIRE(cb.squareState({.rank = 7, .file = 4}) == BLACK_KING);
-    REQUIRE(cb.squareState({.rank = 7, .file = 5}) == BLACK_BISHOP);
-    REQUIRE(cb.squareState({.rank = 7, .file = 6}) == BLACK_KNIGHT);
-    REQUIRE(cb.squareState({.rank = 7, .file = 7}) == BLACK_ROOK);
+    REQUIRE(cb.squareState(Coordinate(7, 0)) == BLACK_ROOK);
+    REQUIRE(cb.squareState(Coordinate(7, 1)) == BLACK_KNIGHT);
+    REQUIRE(cb.squareState(Coordinate(7, 2)) == BLACK_BISHOP);
+    REQUIRE(cb.squareState(Coordinate(7, 3)) == BLACK_QUEEN);
+    REQUIRE(cb.squareState(Coordinate(7, 4)) == BLACK_KING);
+    REQUIRE(cb.squareState(Coordinate(7, 5)) == BLACK_BISHOP);
+    REQUIRE(cb.squareState(Coordinate(7, 6)) == BLACK_KNIGHT);
+    REQUIRE(cb.squareState(Coordinate(7, 7)) == BLACK_ROOK);
 }
 
 TEST_CASE("En passant fen parsed properly") {
     ChessBoard cb = ChessBoard("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3");
-    REQUIRE(cb.squareState({.rank=2, .file=4}) == BLACK_EN_PASSANT_TARGET);
+    REQUIRE(cb.squareState(Coordinate(2, 4)) == BLACK_EN_PASSANT_TARGET);
     cb = ChessBoard("rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6");
-    REQUIRE(cb.squareState({.rank=5, .file=4}) == WHITE_EN_PASSANT_TARGET);
+    REQUIRE(cb.squareState(Coordinate(5, 4)) == WHITE_EN_PASSANT_TARGET);
 }
 
 TEST_CASE("Exception thrown on invalid FEN") {

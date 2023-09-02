@@ -1,16 +1,20 @@
-#ifndef _YACHE_CB_CHESS_BOARD
-#define _YACHE_CB_CHESS_BOARD
+#ifndef YACHE_CHESSBOARD_HPP
+#define YACHE_CHESSBOARD_HPP
 
 #include <string>
 #include "Coordinate.hpp"
 #include "SquareState.hpp"
+#include "Move.hpp"
+
+class Move;
 
 class ChessBoard {
 private:
     SquareState board[8][8] = {EMPTY};
 
     unsigned char squareToAsciiPiece(Coordinate coordinate);
-
+    void addWhitePawnMovesFrom(Coordinate coordinate, std::vector<Move> *moves);
+    void addBlackPawnMovesFrom(Coordinate coordinate, std::vector<Move> *moves);
 public:
     ChessBoard(const std::string &fen);
 
@@ -24,6 +28,10 @@ public:
     SquareState squareState(Coordinate coordinate);
 
     std::string boardString();
+
+    std::vector<Move> pseudoLegalMoves();
+
+    void makeMove(const Move *move);
 };
 
 #endif
