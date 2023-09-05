@@ -12,11 +12,12 @@ class ChessBoard {
 private:
     SquareState board[8][8] = {EMPTY};
 
-    unsigned char squareToAsciiPiece(Coordinate coordinate);
+    unsigned char squareToAsciiPiece(Coordinate coordinate) const;
 
-    void addWhitePawnMovesFrom(Coordinate coordinate, std::vector<Move> *moves);
-    void addBlackPawnMovesFrom(Coordinate coordinate, std::vector<Move> *moves);
-    void addKnightMovesFrom(Coordinate coordinate, std::vector<Move> *moves);
+    void addWhitePawnMovesFrom(Coordinate coordinate, std::vector<Move> *moves) const;
+    void addBlackPawnMovesFrom(Coordinate coordinate, std::vector<Move> *moves) const;
+    void addKnightMovesFrom(Coordinate coordinate, std::vector<Move> *moves) const;
+    void addRookMovesFrom(Coordinate from, vector<Move> *moves) const;
 public:
     ChessBoard(const std::string &fen);
 
@@ -25,15 +26,21 @@ public:
     bool isWhiteTurn;
     int castlingPrivileges;
 
-    bool squareIsOccupied(Coordinate coordinate);
+    bool squareIsOccupied(Coordinate coordinate) const;
 
-    SquareState squareState(Coordinate coordinate);
+    SquareState squareState(Coordinate coordinate) const;
 
-    std::string boardString();
+    std::string boardString() const;
 
-    std::vector<Move> pseudoLegalMoves();
+    std::vector<Move> pseudoLegalMoves() const;
 
     void makeMove(const Move *move);
+
+
+    friend ostream &operator<<(ostream &output, const ChessBoard &chessBoard) {
+        output << chessBoard.boardString();
+        return output;
+    }
 };
 
 #endif

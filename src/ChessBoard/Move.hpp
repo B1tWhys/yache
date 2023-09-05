@@ -17,6 +17,9 @@ using namespace std;
 class Move {
 public:
     Move(Coordinate from, Coordinate to, SquareState targetSquareState);
+    Move(const string &from, const string &to, SquareState targetSquareState = EMPTY);
+    Move(Coordinate from, char rankOffset, char fileOffset, SquareState targetSquareState = EMPTY);
+
     Coordinate getFromCoordinate() const;
     Coordinate getToCoordinate() const;
     bool operator ==(Move other) const;

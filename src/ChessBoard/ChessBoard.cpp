@@ -91,15 +91,15 @@ ChessBoard::ChessBoard(const string &fen) {
 
 ChessBoard::~ChessBoard() = default;
 
-bool ChessBoard::squareIsOccupied(Coordinate coordinate) {
+bool ChessBoard::squareIsOccupied(Coordinate coordinate) const {
     return board[coordinate.getRank()][coordinate.getFile()] != EMPTY;
 }
 
-SquareState ChessBoard::squareState(Coordinate coordinate) {
+SquareState ChessBoard::squareState(Coordinate coordinate) const {
     return board[coordinate.getRank()][coordinate.getFile()];
 }
 
-string ChessBoard::boardString() {
+string ChessBoard::boardString() const {
     string result = string();
     result.append("| |a|b|c|d|e|f|g|h|\n");
     result.append("|-|-|-|-|-|-|-|-|-|\n");
@@ -122,7 +122,7 @@ string ChessBoard::boardString() {
     return result;
 }
 
-unsigned char ChessBoard::squareToAsciiPiece(Coordinate coordinate) {
+unsigned char ChessBoard::squareToAsciiPiece(Coordinate coordinate) const {
     switch (this->squareState(coordinate)) {
         case EMPTY:
             return ' ';
@@ -158,7 +158,7 @@ unsigned char ChessBoard::squareToAsciiPiece(Coordinate coordinate) {
     }
 }
 
-std::vector<Move> ChessBoard::pseudoLegalMoves() {
+std::vector<Move> ChessBoard::pseudoLegalMoves() const {
     std::vector<Move> moves;
 
     for (char rank = 0; rank < 8; rank++) {
@@ -174,6 +174,7 @@ std::vector<Move> ChessBoard::pseudoLegalMoves() {
                 case WHITE_EN_PASSANT_TARGET:
                     break;
                 case WHITE_ROOK:
+                    if (isWhiteTurn) this->addRookMovesFrom(coordinate, &moves);
                     break;
                 case WHITE_KNIGHT:
                     if (isWhiteTurn) this->addKnightMovesFrom(coordinate, &moves);
@@ -207,7 +208,7 @@ std::vector<Move> ChessBoard::pseudoLegalMoves() {
     return moves;
 }
 
-void ChessBoard::addWhitePawnMovesFrom(Coordinate coordinate, std::vector<Move> *moves) {
+void ChessBoard::addWhitePawnMovesFrom(Coordinate coordinate, std::vector<Move> *moves) const {
     const Coordinate &nextSquare = Coordinate(coordinate.getRank() + 1, coordinate.getFile());
     if (nextSquare.getRank() < 8 && !squareIsOccupied(nextSquare)) {
         moves->emplace_back(coordinate, nextSquare, EMPTY);
@@ -217,7 +218,7 @@ void ChessBoard::addWhitePawnMovesFrom(Coordinate coordinate, std::vector<Move> 
     }
 }
 
-void ChessBoard::addBlackPawnMovesFrom(Coordinate coordinate, std::vector<Move> *moves) {
+void ChessBoard::addBlackPawnMovesFrom(Coordinate coordinate, std::vector<Move> *moves) const {
     const Coordinate &nextSquare = Coordinate(coordinate.getRank() - 1, coordinate.getFile());
     if (coordinate.getRank() > 1 && !squareIsOccupied(nextSquare)) {
         moves->emplace_back(coordinate, nextSquare, EMPTY);
@@ -227,7 +228,54 @@ void ChessBoard::addBlackPawnMovesFrom(Coordinate coordinate, std::vector<Move> 
     }
 }
 
-void ChessBoard::addKnightMovesFrom(Coordinate coordinate, std::vector<Move> *moves) {
+void ChessBoard::addRookMovesFrom(Coordinate from, std::vector<Move> *moves) const {
+    for (int rank = from.getRank() + 1; rank < 8; rank++) {
+        Coordinate target = Coordinate(rank, from.getFile());
+        SquareState tgtSquareState = squareState(target);
+        if ((tgtSquareState & WHITE_PIECE) && (tgtSquareState & OCCUPIED)) {
+            break;
+        }
+        moves->emplace_back(from, target, tgtSquareState);
+        if (tgtSquareState & OCCUPIED) {
+            break;
+        }
+    }
+
+    for (int rank = ((char)from.getRank()) - 1; rank >= 0; rank--) {
+        Coordinate target = Coordinate(rank, from.getFile());
+        SquareState tgtSquareState = squareState(target);
+        if ((tgtSquareState & WHITE_PIECE) && (tgtSquareState & OCCUPIED))
+            break;
+        moves->emplace_back(from, target, tgtSquareState);
+        if (tgtSquareState & OCCUPIED) {
+            break;
+        }
+    }
+
+    for (int file = from.getFile() + 1; file < 8; file++) {
+        Coordinate target = Coordinate(from.getRank(), file);
+        SquareState tgtSquareState = squareState(target);
+        if ((tgtSquareState & WHITE_PIECE) && (tgtSquareState & OCCUPIED))
+            break;
+        moves->emplace_back(from, target, tgtSquareState);
+        if (tgtSquareState & OCCUPIED) {
+            break;
+        }
+    }
+
+    for (int file = ((char)from.getFile()) - 1; file >= 0; file--) {
+        Coordinate target = Coordinate(from.getRank(), file);
+        SquareState tgtSquareState = squareState(target);
+        if ((tgtSquareState & WHITE_PIECE) && (tgtSquareState & OCCUPIED))
+            break;
+        moves->emplace_back(from, target, tgtSquareState);
+        if (tgtSquareState & OCCUPIED) {
+            break;
+        }
+    }
+}
+
+void ChessBoard::addKnightMovesFrom(Coordinate coordinate, std::vector<Move> *moves) const {
     // these are starting from up 2 right 1, moving around clockwise
     Coordinate target = Coordinate(coordinate.getRank() + 2, coordinate.getFile() + 1);
     if (target.isValidSquare()) moves->emplace_back(coordinate, target, EMPTY);
