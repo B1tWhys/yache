@@ -17,7 +17,8 @@ private:
     void addWhitePawnMovesFrom(Coordinate coordinate, std::vector<Move> *moves) const;
     void addBlackPawnMovesFrom(Coordinate coordinate, std::vector<Move> *moves) const;
     void addKnightMovesFrom(Coordinate coordinate, std::vector<Move> *moves) const;
-    void addRookMovesFrom(Coordinate from, vector<Move> *moves) const;
+    void addWhiteRookMovesFrom(Coordinate from, vector<Move> *moves) const;
+    void addBlackRookMovesFrom(Coordinate from, vector<Move> *moves) const;
 public:
     ChessBoard(const std::string &fen);
 
