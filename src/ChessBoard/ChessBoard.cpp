@@ -180,6 +180,7 @@ std::vector<Move> ChessBoard::pseudoLegalMoves() const {
                     if (isWhiteTurn) this->addKnightMovesFrom(coordinate, &moves);
                     break;
                 case WHITE_BISHOP:
+                    if (isWhiteTurn) this->addWhiteBishopMovesFrom(coordinate, &moves);
                     break;
                 case WHITE_KING:
                     break;
@@ -197,6 +198,7 @@ std::vector<Move> ChessBoard::pseudoLegalMoves() const {
                     if (!isWhiteTurn) this->addKnightMovesFrom(coordinate, &moves);
                     break;
                 case BLACK_BISHOP:
+                    if (!isWhiteTurn) this->addBlackBishopMovesFrom(coordinate, &moves);
                     break;
                 case BLACK_KING:
                     break;
@@ -242,7 +244,7 @@ void ChessBoard::addWhiteRookMovesFrom(Coordinate from, std::vector<Move> *moves
         }
     }
 
-    for (int rank = ((char)from.getRank()) - 1; rank >= 0; rank--) {
+    for (int rank = ((char) from.getRank()) - 1; rank >= 0; rank--) {
         Coordinate target = Coordinate(rank, from.getFile());
         SquareState tgtSquareState = squareState(target);
         if ((tgtSquareState & WHITE_PIECE) && (tgtSquareState & OCCUPIED))
@@ -264,7 +266,7 @@ void ChessBoard::addWhiteRookMovesFrom(Coordinate from, std::vector<Move> *moves
         }
     }
 
-    for (int file = ((char)from.getFile()) - 1; file >= 0; file--) {
+    for (int file = ((char) from.getFile()) - 1; file >= 0; file--) {
         Coordinate target = Coordinate(from.getRank(), file);
         SquareState tgtSquareState = squareState(target);
         if ((tgtSquareState & WHITE_PIECE) && (tgtSquareState & OCCUPIED))
@@ -289,7 +291,7 @@ void ChessBoard::addBlackRookMovesFrom(Coordinate from, std::vector<Move> *moves
         }
     }
 
-    for (int rank = ((char)from.getRank()) - 1; rank >= 0; rank--) {
+    for (int rank = ((char) from.getRank()) - 1; rank >= 0; rank--) {
         Coordinate target = Coordinate(rank, from.getFile());
         SquareState tgtSquareState = squareState(target);
         if (!(tgtSquareState & WHITE_PIECE) && (tgtSquareState & OCCUPIED))
@@ -311,7 +313,7 @@ void ChessBoard::addBlackRookMovesFrom(Coordinate from, std::vector<Move> *moves
         }
     }
 
-    for (int file = ((char)from.getFile()) - 1; file >= 0; file--) {
+    for (int file = ((char) from.getFile()) - 1; file >= 0; file--) {
         Coordinate target = Coordinate(from.getRank(), file);
         SquareState tgtSquareState = squareState(target);
         if (!(tgtSquareState & WHITE_PIECE) && (tgtSquareState & OCCUPIED))
@@ -322,7 +324,6 @@ void ChessBoard::addBlackRookMovesFrom(Coordinate from, std::vector<Move> *moves
         }
     }
 }
-
 
 
 void ChessBoard::addKnightMovesFrom(Coordinate coordinate, std::vector<Move> *moves) const {
@@ -351,4 +352,82 @@ void ChessBoard::makeMove(const Move *move) {
 
     *toSquare = *fromSquare;
     isWhiteTurn = !isWhiteTurn;
+}
+
+void ChessBoard::addWhiteBishopMovesFrom(const Coordinate from, vector<Move> *moves) const {
+    Coordinate target = from;
+    while (true) {
+        target = Coordinate(target, 1, 1);
+        if (!target.isValidSquare()) break;
+        SquareState tgtSquareState = squareState(target);
+        if (tgtSquareState & WHITE_PIECE) break;
+        moves->emplace_back(from, target, tgtSquareState);
+        if (tgtSquareState & OCCUPIED) break;
+    }
+    target = from;
+    while (true) {
+        target = Coordinate(target, 1, -1);
+        if (!target.isValidSquare()) break;
+        SquareState tgtSquareState = squareState(target);
+        if (tgtSquareState & WHITE_PIECE) break;
+        moves->emplace_back(from, target, tgtSquareState);
+        if (tgtSquareState & OCCUPIED) break;
+    }
+    target = from;
+    while (true) {
+        target = Coordinate(target, -1, 1);
+        if (!target.isValidSquare()) break;
+        SquareState tgtSquareState = squareState(target);
+        if (tgtSquareState & WHITE_PIECE) break;
+        moves->emplace_back(from, target, tgtSquareState);
+        if (tgtSquareState & OCCUPIED) break;
+    }
+    target = from;
+    while (true) {
+        target = Coordinate(target, -1, -1);
+        if (!target.isValidSquare()) break;
+        SquareState tgtSquareState = squareState(target);
+        if (tgtSquareState & WHITE_PIECE) break;
+        moves->emplace_back(from, target, tgtSquareState);
+        if (tgtSquareState & OCCUPIED) break;
+    }
+}
+
+void ChessBoard::addBlackBishopMovesFrom(const Coordinate from, vector<Move> *moves) const {
+    Coordinate target = from;
+    while (true) {
+        target = Coordinate(target, 1, 1);
+        if (!target.isValidSquare()) break;
+        SquareState tgtSquareState = squareState(target);
+        if ((tgtSquareState & OCCUPIED) && !(tgtSquareState & WHITE_PIECE)) break;
+        moves->emplace_back(from, target, tgtSquareState);
+        if (tgtSquareState & OCCUPIED) break;
+    }
+    target = from;
+    while (true) {
+        target = Coordinate(target, 1, -1);
+        if (!target.isValidSquare()) break;
+        SquareState tgtSquareState = squareState(target);
+        if ((tgtSquareState & OCCUPIED) && !(tgtSquareState & WHITE_PIECE)) break;
+        moves->emplace_back(from, target, tgtSquareState);
+        if (tgtSquareState & OCCUPIED) break;
+    }
+    target = from;
+    while (true) {
+        target = Coordinate(target, -1, 1);
+        if (!target.isValidSquare()) break;
+        SquareState tgtSquareState = squareState(target);
+        if ((tgtSquareState & OCCUPIED) && !(tgtSquareState & WHITE_PIECE)) break;
+        moves->emplace_back(from, target, tgtSquareState);
+        if (tgtSquareState & OCCUPIED) break;
+    }
+    target = from;
+    while (true) {
+        target = Coordinate(target, -1, -1);
+        if (!target.isValidSquare()) break;
+        SquareState tgtSquareState = squareState(target);
+        if ((tgtSquareState & OCCUPIED) && !(tgtSquareState & WHITE_PIECE)) break;
+        moves->emplace_back(from, target, tgtSquareState);
+        if (tgtSquareState & OCCUPIED) break;
+    }
 }

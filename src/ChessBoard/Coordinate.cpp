@@ -8,6 +8,12 @@ Coordinate::Coordinate(unsigned char rank, unsigned char file) {
     cords = rank << 4 | (file & 0xf);
 }
 
+Coordinate::Coordinate(Coordinate &src, unsigned char rankOffset, unsigned char fileOffset) {
+    cords = src.cords;
+    cords += fileOffset;
+    cords += (rankOffset << 4);
+}
+
 Coordinate::Coordinate(unsigned char cords) {
     this->cords = cords;
 }

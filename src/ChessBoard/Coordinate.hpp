@@ -7,6 +7,7 @@ using namespace std;
 class Coordinate {
 public:
     Coordinate(unsigned char rank, unsigned char file);
+    Coordinate(Coordinate &src, unsigned char rankOffset, unsigned char fileOffset);
     explicit Coordinate(const std::string &notation);
     explicit Coordinate(unsigned char cords);
     unsigned char getRank() const;
