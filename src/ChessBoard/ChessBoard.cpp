@@ -185,6 +185,7 @@ std::vector<Move> ChessBoard::pseudoLegalMoves() const {
                 case WHITE_KING:
                     break;
                 case WHITE_QUEEN:
+                    if (isWhiteTurn) this->addWhiteQueenMovesFrom(coordinate, &moves);
                     break;
                 case BLACK_PAWN:
                     if (!isWhiteTurn) this->addBlackPawnMovesFrom(coordinate, &moves);
@@ -203,6 +204,7 @@ std::vector<Move> ChessBoard::pseudoLegalMoves() const {
                 case BLACK_KING:
                     break;
                 case BLACK_QUEEN:
+                    if (!isWhiteTurn) this->addBlackQueenMovesFrom(coordinate, &moves);
                     break;
             }
         }
@@ -434,4 +436,14 @@ void ChessBoard::addBlackBishopMovesFrom(const Coordinate from, vector<Move> *mo
         moves->emplace_back(from, target, tgtSquareState);
         if (tgtSquareState & OCCUPIED) break;
     }
+}
+
+void ChessBoard::addWhiteQueenMovesFrom(const Coordinate from, vector<Move> *moves) const {
+    addWhiteRookMovesFrom(from, moves);
+    addWhiteBishopMovesFrom(from, moves);
+}
+
+void ChessBoard::addBlackQueenMovesFrom(const Coordinate from, vector<Move> *moves) const {
+    addBlackRookMovesFrom(from, moves);
+    addBlackBishopMovesFrom(from, moves);
 }
