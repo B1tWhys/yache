@@ -244,10 +244,10 @@ TEST_CASE("Black bishops obstructed by black pawns move generation") {
             Move("c6", "c5"),
             Move("f6", "f5"),
             Move("g6", "g5"),
-//            Move("b2", "b1"), // this is gonna break once promotion is implemented...
-//            Move("c2", "c1"),
-//            Move("f2", "f1"),
-//            Move("g2", "g1"),
+            Move("b2", "b1"), // this is gonna break once promotion is implemented...
+            Move("c2", "c1"),
+            Move("f2", "f1"),
+            Move("g2", "g1"),
 
             // bishop moves
             Move("d4", "c5"),
