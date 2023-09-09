@@ -212,21 +212,25 @@ std::vector<Move> ChessBoard::pseudoLegalMoves() const {
 }
 
 void ChessBoard::addWhitePawnMovesFrom(Coordinate coordinate, std::vector<Move> *moves) const {
-    const Coordinate &nextSquare = Coordinate(coordinate.getRank() + 1, coordinate.getFile());
-    if (nextSquare.getRank() < 8 && !squareIsOccupied(nextSquare)) {
-        moves->emplace_back(coordinate, nextSquare, EMPTY);
+    Coordinate target = Coordinate(coordinate, 1, 0);
+    if (target.isValidSquare() && !squareIsOccupied(target)) {
+        moves->emplace_back(coordinate, target, EMPTY);
         if (coordinate.getRank() == 1) {
-            moves->emplace_back(coordinate, Coordinate(coordinate.getRank() + 2, coordinate.getFile()), EMPTY);
+            target = Coordinate(target, 1, 0);
+            if (!squareIsOccupied(target))
+                moves->emplace_back(coordinate, Coordinate(coordinate, 2, 0), EMPTY);
         }
     }
 }
 
 void ChessBoard::addBlackPawnMovesFrom(Coordinate coordinate, std::vector<Move> *moves) const {
-    const Coordinate &nextSquare = Coordinate(coordinate.getRank() - 1, coordinate.getFile());
-    if (coordinate.getRank() > 1 && !squareIsOccupied(nextSquare)) {
-        moves->emplace_back(coordinate, nextSquare, EMPTY);
+    Coordinate target = Coordinate(coordinate, -1, 0);
+    if (target.isValidSquare() && !squareIsOccupied(target)) {
+        moves->emplace_back(coordinate, target, EMPTY);
         if (coordinate.getRank() == 6) {
-            moves->emplace_back(coordinate, Coordinate(coordinate.getRank() - 2, coordinate.getFile()), EMPTY);
+            target = Coordinate(target, -1, 0);
+            if (!squareIsOccupied(target))
+                moves->emplace_back(coordinate, Coordinate(coordinate, -2, 0), EMPTY);
         }
     }
 }

@@ -39,21 +39,20 @@ TEST_CASE("White pawns properly calculate double forward moves") {
      |8| | | | | | | | |
      |7|p| | |p| | | |p|
      |6| | | |p| | | | |
-     |5| | | | | | | | |
-     |4| | | | | | | | |
+     |5| | | | | | | |P|
+     |4| | | | | | | |P|
      |3| | | |P| | | | |
      |2|P| | |P| | | |P|
      |1| | | | | | | | |
      */
-    ChessBoard cb = ChessBoard("8/p2p3p/3p4/8/8/3P4/P2P3P/8 w - -");
-    CAPTURE(cb);
+    ChessBoard cb = ChessBoard("8/p2p3p/3p4/7p/7P/3P4/P2P3P/8 w - -");
+    INFO("-\n" << cb);
     vector<Move> expectedMoves = vector{
             Move(Coordinate("a2"), Coordinate("a4"), EMPTY),
             Move(Coordinate("a2"), Coordinate("a3"), EMPTY),
 
             Move(Coordinate("d3"), Coordinate("d4"), EMPTY),
 
-            Move(Coordinate("h2"), Coordinate("h4"), EMPTY),
             Move(Coordinate("h2"), Coordinate("h3"), EMPTY),
     };
     REQUIRE_THAT(cb.pseudoLegalMoves(), UnorderedEquals(expectedMoves));
@@ -66,24 +65,22 @@ TEST_CASE("Black pawns properly calculate double forward moves") {
      |8| | | | | | | | |
      |7|p| | |p| | | |p|
      |6| | | |p| | | | |
-     |5| | | | | | | | |
-     |4| | | | | | | | |
+     |5| | | | | | | |P|
+     |4| | | | | | | |P|
      |3| | | |P| | | | |
      |2|P| | |P| | | |P|
      |1| | | | | | | | |
      */
-    ChessBoard cb = ChessBoard("8/p2p3p/3p4/8/8/3P4/P2P3P/8 b - -");
-    CAPTURE(cb);
+    ChessBoard cb = ChessBoard("8/p2p3p/3p4/7p/7P/3P4/P2P3P/8 b - -");
+    INFO("-\n" << cb);
     vector<Move> expectedMoves = vector{
-        Move(Coordinate("a7"), Coordinate("a6"), EMPTY),
-        Move(Coordinate("a7"), Coordinate("a5"), EMPTY),
+            Move(Coordinate("a7"), Coordinate("a6"), EMPTY),
+            Move(Coordinate("a7"), Coordinate("a5"), EMPTY),
 
-        Move(Coordinate("d6"), Coordinate("d5"), EMPTY),
+            Move(Coordinate("d6"), Coordinate("d5"), EMPTY),
 
-        Move(Coordinate("h7"), Coordinate("h6"), EMPTY),
-        Move(Coordinate("h7"), Coordinate("h5"), EMPTY),
+            Move(Coordinate("h7"), Coordinate("h6"), EMPTY),
     };
-
     REQUIRE_THAT(cb.pseudoLegalMoves(), UnorderedEquals(expectedMoves));
 }
 
